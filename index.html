@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Legacy Business 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS — HIGH-END EDITORIAL
+   Light Mode Default · Dark Mode via [data-theme="dark"]
+═══════════════════════════════════════════════════════════ */
+:root {
+  /* Light palette */
+  --surface:            #f9f9f9;
+  --surface-low:        #f3f3f3;
+  --surface-lowest:     #ffffff;
+  --surface-dim:        #dadada;
+  --surface-container:  rgba(238,238,238,.70);
+  --primary:            #000000;
+  --primary-container:  #3b3b3b;
+  --on-primary:         #e2e2e2;
+  --on-surface:         #1b1b1b;
+  --on-surface-var:     #444444;
+  --outline-variant:    rgba(198,198,198,.20);
+  --outline-ghost:      rgba(0,0,0,.10);
+
+  /* Semantic */
+  --bg:       var(--surface);
+  --card-bg:  var(--surface-lowest);
+  --ink:      var(--on-surface);
+  --mid:      var(--on-surface-var);
+  --dim:      #888888;
+  --accent:   #000000;
+  --acc-bg:   rgba(0,0,0,.05);
+
+  /* Status */
+  --green:    #2e7d5e;
+  --blue:     #2c5f9a;
+  --red:      #9a2c2c;
+  --amber:    #8a5a00;
+
+  /* Typography */
+  --font-display: 'Noto Serif', Georgia, serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+
+  /* Spacing (design system tokens) */
+  --sp-4:  1.4rem;
+  --sp-8:  2rem;
+  --sp-12: 4rem;
+  --sp-16: 5.5rem;
+  --sp-24: 8.5rem;
+
+  /* No rounded corners per spec */
+  --r: 0px;
+
+  /* Shadow: ambient only, tonal */
+  --shadow-float: 0 40px 40px 0 rgba(27,27,27,.04);
+  --shadow-card:  0 2px 12px rgba(27,27,27,.05);
+}
+
+[data-theme="dark"] {
+  --surface:           #0e0e0f;
+  --surface-low:       #141416;
+  --surface-lowest:    #1a1a1d;
+  --surface-dim:       #2a2a2e;
+  --surface-container: rgba(30,30,34,.80);
+  --primary:           #e8e8e8;
+  --primary-container: #a0a0a0;
+  --on-primary:        #111111;
+  --on-surface:        #e2e2e2;
+  --on-surface-var:    #888888;
+  --outline-variant:   rgba(255,255,255,.08);
+  --outline-ghost:     rgba(255,255,255,.06);
+  --bg:       var(--surface);
+  --card-bg:  var(--surface-lowest);
+  --ink:      var(--on-surface);
+  --mid:      var(--on-surface-var);
+  --dim:      #555558;
+  --accent:   #e2e2e2;
+  --acc-bg:   rgba(255,255,255,.05);
+  --green:    #4caf87;
+  --blue:     #6890d4;
+  --red:      #d46868;
+  --amber:    #c8a050;
+  --shadow-float: 0 40px 40px 0 rgba(0,0,0,.30);
+  --shadow-card:  0 2px 16px rgba(0,0,0,.25);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════════════════ */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  transition: background .35s ease, color .35s ease;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PROGRESS BAR — thin editorial line
+═══════════════════════════════════════════════════════════ */
+.progress-rail {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--outline-variant); z-index: 200;
+}
+.progress-fill {
+  height: 100%; background: var(--primary);
+  transition: width .6s cubic-bezier(.4,0,.2,1); width: 0%;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FIXED NAV — glassmorphism per spec
+═══════════════════════════════════════════════════════════ */
+.nav {
+  position: fixed; top: 2px; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .9rem 2rem;
+  background: var(--surface-container);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  z-index: 100;
+  border-bottom: 1px solid var(--outline-variant);
+}
+.nav-wordmark {
+  font-family: var(--font-display);
+  font-size: .8rem; font-weight: 300; letter-spacing: .12em;
+  color: var(--ink); text-transform: uppercase;
+  font-style: italic;
+}
+.nav-right { display: flex; align-items: center; gap: 1.2rem; }
+.nav-step {
+  font-family: var(--font-body); font-size: .6875rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dim);
+}
+.theme-toggle {
+  background: none; border: none; cursor: pointer;
+  width: 28px; height: 28px; display: flex; align-items: center;
+  justify-content: center; color: var(--mid); transition: color .2s;
+  padding: 0;
+}
+.theme-toggle:hover { color: var(--ink); }
+.theme-toggle svg { width: 15px; height: 15px; }
+
+/* ═══════════════════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════════════════ */
+.wrap {
+  max-width: 660px; margin: 0 auto;
+  padding: 6rem 2rem 8rem;
+}
+.screen { display: none; }
+.screen.active {
+  display: block;
+  animation: reveal .45s cubic-bezier(.4,0,.2,1);
+}
+@keyframes reveal {
+  from { opacity:0; transform: translateY(18px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TYPOGRAPHY — Editorial Scale
+═══════════════════════════════════════════════════════════ */
+.display-lg {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 8vw, 3.5rem);
+  font-weight: 300; line-height: 1.05;
+  letter-spacing: -.02em; color: var(--ink);
+}
+.display-lg em { font-style: italic; }
+.headline-lg {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 400; line-height: 1.2;
+  letter-spacing: -.01em; color: var(--ink);
+  margin-bottom: .5rem;
+}
+.headline-lg em { font-style: italic; color: var(--mid); }
+.label-sm {
+  font-family: var(--font-body);
+  font-size: .6875rem; font-weight: 500;
+  letter-spacing: .10rem; text-transform: uppercase;
+  color: var(--dim);
+}
+.body-md { font-size: .875rem; color: var(--mid); line-height: 1.7; }
+.title-md { font-size: 1.125rem; font-weight: 500; color: var(--ink); }
+
+/* ═══════════════════════════════════════════════════════════
+   HERO — SCREEN 0
+═══════════════════════════════════════════════════════════ */
+.hero {
+  padding: 3rem 0 var(--sp-12);
+}
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+.hero-eyebrow::before {
+  content: ''; width: 40px; height: 1px;
+  background: var(--primary); display: block; flex-shrink: 0;
+}
+.hero-meta-strip {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  margin-top: 3.5rem;
+  border-top: 1px solid var(--outline-variant);
+  padding-top: 2rem; gap: 0;
+}
+.hero-meta-item {
+  padding-right: 2rem;
+}
+.hero-meta-item + .hero-meta-item {
+  padding-left: 2rem;
+  border-left: 1px solid var(--outline-variant);
+}
+.hero-meta-val {
+  font-family: var(--font-display); font-size: 1.4rem;
+  font-weight: 300; font-style: italic; color: var(--ink);
+  margin-top: .3rem;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION HEADERS
+═══════════════════════════════════════════════════════════ */
+.section-head {
+  margin-bottom: 2.5rem;
+}
+.section-rule {
+  width: 32px; height: 1px; background: var(--primary);
+  margin-bottom: 1.2rem;
+}
+.section-index {
+  font-family: var(--font-body); font-size: .6875rem;
+  letter-spacing: .10rem; text-transform: uppercase;
+  color: var(--dim); margin-bottom: .6rem;
+}
+.section-sub {
+  font-family: var(--font-body); font-size: .875rem;
+  color: var(--mid); font-style: italic; margin-top: .4rem;
+  max-width: 480px; line-height: 1.7;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CARDS — tonal lift, no border lines
+═══════════════════════════════════════════════════════════ */
+.block {
+  background: var(--card-bg);
+  padding: 2rem 2.2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-card);
+}
+.block-title {
+  font-family: var(--font-display);
+  font-size: 1rem; font-weight: 400;
+  color: var(--ink); margin-bottom: .3rem;
+  font-style: italic;
+}
+.block-sub {
+  font-size: .8125rem; color: var(--mid);
+  margin-bottom: 1.4rem; line-height: 1.65;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONSENT ITEMS
+═══════════════════════════════════════════════════════════ */
+.consent-row {
+  display: flex; gap: 1rem; align-items: flex-start;
+  padding: 1.2rem 0; cursor: pointer; user-select: none;
+  border-bottom: 1px solid var(--outline-variant);
+  transition: opacity .2s;
+}
+.consent-row:last-of-type { border-bottom: none; }
+.consent-row:hover { opacity: .8; }
+.consent-check {
+  width: 18px; height: 18px; flex-shrink: 0;
+  border: 1.5px solid var(--surface-dim);
+  background: var(--surface-low); margin-top: .2rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.consent-row.checked .consent-check {
+  background: var(--primary); border-color: var(--primary);
+}
+.consent-tick { display: none; color: var(--on-primary); font-size: .65rem; font-weight: 700; }
+.consent-row.checked .consent-tick { display: block; }
+.consent-text { font-size: .8125rem; color: var(--mid); line-height: 1.6; }
+.consent-text strong { color: var(--ink); font-weight: 500; }
+
+/* ═══════════════════════════════════════════════════════════
+   FORM ELEMENTS — no bounding box, bottom border only
+═══════════════════════════════════════════════════════════ */
+.field { margin-bottom: 2rem; }
+.field-label {
+  font-family: var(--font-body); font-size: .6875rem;
+  letter-spacing: .10rem; text-transform: uppercase;
+  color: var(--dim); display: block; margin-bottom: .7rem;
+}
+select {
+  width: 100%; background: transparent;
+  border: none; border-bottom: 1px solid var(--surface-dim);
+  color: var(--ink); font-family: var(--font-body);
+  font-size: .9375rem; padding: .6rem 1.8rem .6rem 0;
+  cursor: pointer; transition: border-color .2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='1.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right .2rem center;
+}
+select:focus { outline: none; border-bottom-color: var(--primary); }
+select option { background: var(--card-bg); color: var(--ink); }
+
+textarea {
+  width: 100%; background: transparent;
+  border: none; border-bottom: 1px solid var(--surface-dim);
+  color: var(--ink); font-family: var(--font-body);
+  font-size: .875rem; padding: .6rem 0; resize: none;
+  min-height: 80px; transition: border-color .2s; line-height: 1.6;
+}
+textarea:focus { outline: none; border-bottom-color: var(--primary); }
+textarea::placeholder { color: var(--dim); }
+
+/* ═══════════════════════════════════════════════════════════
+   OPTION ROWS — no border, tonal bg on select
+═══════════════════════════════════════════════════════════ */
+.opts { display: flex; flex-direction: column; gap: 0; }
+.opt {
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: .9rem 0; cursor: pointer; user-select: none;
+  border-bottom: 1px solid var(--outline-variant);
+  transition: background .15s;
+}
+.opt:last-child { border-bottom: none; }
+.opt:hover { background: var(--acc-bg); margin: 0 -2.2rem; padding-left: 2.2rem; padding-right: 2.2rem; }
+.opt.sel { background: var(--acc-bg); margin: 0 -2.2rem; padding-left: 2.2rem; padding-right: 2.2rem; }
+.opt-mark {
+  width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
+  border: 1.5px solid var(--surface-dim); margin-top: .3rem;
+  position: relative; transition: border-color .2s;
+}
+.opt.sel .opt-mark { border-color: var(--primary); }
+.opt.sel .opt-mark::after {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 6px; height: 6px; border-radius: 50%; background: var(--primary);
+}
+.opt-label { font-size: .875rem; color: var(--mid); transition: color .15s; line-height: 1.5; }
+.opt.sel .opt-label { color: var(--ink); }
+.opt-note { font-size: .75rem; color: var(--dim); display: block; margin-top: .1rem; }
+
+/* ═══════════════════════════════════════════════════════════
+   CHIPS — refined tag style
+═══════════════════════════════════════════════════════════ */
+.chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+.chip {
+  font-family: var(--font-body); font-size: .6875rem;
+  letter-spacing: .06em; text-transform: uppercase;
+  padding: .45rem 1rem;
+  border: 1px solid var(--outline-ghost);
+  background: var(--surface-low);
+  color: var(--mid); cursor: pointer;
+  transition: all .2s;
+}
+.chip:hover { border-color: var(--primary); color: var(--ink); }
+.chip.sel {
+  background: var(--primary); border-color: var(--primary);
+  color: var(--on-primary);
+}
+[data-theme="dark"] .chip.sel { color: var(--on-primary); }
+
+/* ═══════════════════════════════════════════════════════════
+   FREQUENCY ROWS
+═══════════════════════════════════════════════════════════ */
+.freq-grid { display: flex; flex-direction: column; }
+.freq-row {
+  display: flex; align-items: center; gap: 1rem;
+  padding: .9rem 0; cursor: pointer;
+  border-bottom: 1px solid var(--outline-variant);
+  transition: background .15s; user-select: none;
+}
+.freq-row:last-child { border-bottom: none; }
+.freq-row:hover { background: var(--acc-bg); margin: 0 -2.2rem; padding: .9rem 2.2rem; }
+.freq-row.sel  { background: var(--acc-bg); margin: 0 -2.2rem; padding: .9rem 2.2rem; }
+.freq-dot {
+  width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
+  border: 1.5px solid var(--dim); position: relative; transition: all .2s;
+}
+.freq-row.sel .freq-dot { border-color: var(--primary); }
+.freq-row.sel .freq-dot::after {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 5px; height: 5px; border-radius: 50%; background: var(--primary);
+}
+.freq-label { font-size: .875rem; color: var(--mid); flex: 1; transition: color .15s; }
+.freq-row.sel .freq-label { color: var(--ink); }
+.freq-badge {
+  font-family: var(--font-body); font-size: .6rem;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--dim);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MAILS SCALE ITEMS
+═══════════════════════════════════════════════════════════ */
+.scale-q {
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--outline-variant);
+  transition: background .2s;
+}
+.scale-q:last-child { border-bottom: none; }
+.scale-q.answered { background: var(--acc-bg); margin: 0 -2.2rem; padding: 1.4rem 2.2rem; }
+.scale-text {
+  font-size: .875rem; color: var(--ink); margin-bottom: 1rem;
+  line-height: 1.55;
+}
+.scale-num {
+  font-family: var(--font-display); font-style: italic;
+  font-size: .9rem; color: var(--dim); margin-right: .5rem;
+}
+.scale-track { display: flex; align-items: center; gap: .5rem; }
+.scale-anchor {
+  font-size: .6rem; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--dim); flex-shrink: 0; width: 54px; line-height: 1.3;
+}
+.scale-anchor:last-child { text-align: right; }
+.scale-dots { display: flex; gap: .3rem; flex: 1; justify-content: center; }
+.dot {
+  width: 28px; height: 28px;
+  border: 1px solid var(--outline-ghost);
+  background: var(--surface-low);
+  cursor: pointer; display: flex; align-items: center;
+  justify-content: center; font-family: var(--font-body);
+  font-size: .62rem; color: var(--dim);
+  transition: all .15s; flex-shrink: 0; font-weight: 400;
+}
+.dot:hover { border-color: var(--primary); color: var(--ink); background: var(--surface-lowest); }
+.dot.sel {
+  background: var(--primary); border-color: var(--primary);
+  color: var(--on-primary); font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════════════════════ */
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-family: var(--font-body); font-size: .6875rem;
+  letter-spacing: .10rem; text-transform: uppercase; font-weight: 500;
+  border: none; cursor: pointer; transition: all .2s;
+  padding: var(--sp-4) 2rem; /* 1.4rem horizontal per spec */
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+  color: var(--on-primary);
+}
+.btn-primary:hover { opacity: .88; transform: translateY(-1px); box-shadow: var(--shadow-float); }
+.btn-secondary {
+  background: transparent; color: var(--primary);
+  border: 1px solid var(--outline-ghost);
+}
+.btn-secondary:hover { border-color: var(--primary); }
+.btn:disabled { opacity: .3; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+.btn-group { display: flex; gap: 1rem; margin-top: 3rem; flex-wrap: wrap; }
+
+/* ═══════════════════════════════════════════════════════════
+   OPTIONAL TAG
+═══════════════════════════════════════════════════════════ */
+.optional {
+  font-family: var(--font-body); font-size: .55rem;
+  letter-spacing: .08rem; text-transform: uppercase; color: var(--dim);
+  border: 1px solid var(--outline-variant); padding: .05rem .4rem;
+  margin-left: .4rem; vertical-align: middle;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESULTS SCREEN
+═══════════════════════════════════════════════════════════ */
+.result-masthead {
+  padding: 2.5rem 0 3rem;
+  border-bottom: 1px solid var(--outline-variant);
+  margin-bottom: var(--sp-8);
+}
+.result-eyebrow {
+  font-size: .6875rem; letter-spacing: .10rem;
+  text-transform: uppercase; color: var(--dim); margin-bottom: 1rem;
+}
+.result-score-wrap {
+  display: flex; align-items: baseline; gap: .6rem; margin: .8rem 0 .4rem;
+}
+.result-score {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 14vw, 6rem);
+  font-weight: 300; line-height: 1; color: var(--ink);
+  letter-spacing: -.04em;
+}
+.result-denom {
+  font-family: var(--font-display); font-style: italic;
+  font-size: 1.4rem; color: var(--dim); font-weight: 300;
+}
+.result-tier {
+  font-family: var(--font-body); font-size: .6875rem;
+  letter-spacing: .12rem; text-transform: uppercase;
+  color: var(--ink); font-weight: 500;
+}
+.result-desc {
+  font-size: .875rem; color: var(--mid); max-width: 460px;
+  line-height: 1.7; margin-top: .6rem; font-style: italic;
+}
+
+/* Gauge */
+.gauge-wrap { margin: 2rem 0; }
+.gauge-track {
+  height: 2px; background: var(--surface-dim); overflow: hidden;
+}
+.gauge-fill {
+  height: 100%; background: var(--primary);
+  transition: width 1.2s cubic-bezier(.4,0,.2,1);
+}
+.gauge-labels {
+  display: flex; justify-content: space-between;
+  font-family: var(--font-body); font-size: .6rem;
+  letter-spacing: .06em; color: var(--dim); margin-top: .4rem;
+}
+
+/* Dimension grid */
+.dim-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.5rem; margin-bottom: 1rem;
+}
+.dim-block { }
+.dim-name {
+  font-family: var(--font-body); font-size: .6rem;
+  letter-spacing: .10rem; text-transform: uppercase;
+  color: var(--dim); margin-bottom: .5rem;
+}
+.dim-score {
+  font-family: var(--font-display); font-size: 2.2rem;
+  font-weight: 300; color: var(--ink); line-height: 1;
+  font-style: italic;
+}
+.dim-bar {
+  height: 1px; background: var(--surface-dim); margin-top: .6rem;
+}
+.dim-bar-fill {
+  height: 1px; background: var(--primary);
+  transition: width 1.4s cubic-bezier(.4,0,.2,1);
+}
+
+/* Adoption cells */
+.adopt-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 0; margin: 1.5rem 0;
+  border-top: 1px solid var(--outline-variant);
+  border-bottom: 1px solid var(--outline-variant);
+}
+.adopt-cell {
+  padding: 1.4rem 1.2rem;
+  border-right: 1px solid var(--outline-variant);
+}
+.adopt-cell:last-child { border-right: none; }
+.adopt-val {
+  font-family: var(--font-display); font-size: 2rem;
+  font-weight: 300; font-style: italic; color: var(--ink);
+}
+.adopt-lbl {
+  font-size: .6rem; letter-spacing: .08rem; text-transform: uppercase;
+  color: var(--dim); margin-top: .2rem; line-height: 1.4;
+}
+
+/* Benchmarking */
+.bench-block { padding: 2rem 0; border-bottom: 1px solid var(--outline-variant); }
+.bench-block:last-child { border-bottom: none; }
+.bench-heading {
+  font-family: var(--font-display); font-style: italic;
+  font-size: 1rem; font-weight: 400; color: var(--ink); margin-bottom: .2rem;
+}
+.bench-sub {
+  font-size: .75rem; color: var(--dim); margin-bottom: 1.2rem;
+  font-style: italic;
+}
+.bench-pending {
+  font-family: var(--font-body); font-size: .75rem; color: var(--dim);
+  line-height: 1.7; padding: 1rem 0;
+  border-top: 1px solid var(--outline-variant);
+}
+.comp-row { display: flex; align-items: center; gap: 1rem; margin-bottom: .7rem; }
+.comp-label {
+  font-family: var(--font-body); font-size: .6rem;
+  letter-spacing: .08rem; text-transform: uppercase;
+  color: var(--dim); min-width: 80px;
+}
+.comp-bar-wrap {
+  flex: 1; height: 2px; background: var(--surface-dim); overflow: hidden;
+}
+.comp-bar { height: 2px; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
+.comp-bar.you  { background: var(--primary); }
+.comp-bar.peer { background: var(--dim); }
+.comp-val {
+  font-family: var(--font-display); font-style: italic;
+  font-size: .85rem; color: var(--ink); min-width: 28px; text-align: right;
+}
+
+/* Insight */
+.insight-block {
+  padding: 2rem 0; margin-top: 1rem;
+  border-top: 1px solid var(--outline-variant);
+}
+.insight-block p {
+  font-family: var(--font-display); font-style: italic;
+  font-size: .9375rem; color: var(--mid); line-height: 1.75;
+}
+.insight-block strong { color: var(--ink); font-style: normal; font-weight: 500; }
+
+/* Warning */
+.warn-note {
+  font-size: .75rem; color: var(--amber);
+  padding: .7rem 0; letter-spacing: .02em; line-height: 1.6;
+  border-bottom: 1px solid var(--outline-variant); margin-bottom: 1rem;
+}
+
+/* Spacing between major sections */
+.major-section { margin-top: var(--sp-12); }
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--surface-dim); }
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 520px) {
+  .wrap { padding: 5rem 1.2rem 7rem; }
+  .hero-meta-strip { grid-template-columns: 1fr; gap: 1.2rem; }
+  .hero-meta-item + .hero-meta-item { border-left: none; padding-left: 0; border-top: 1px solid var(--outline-variant); padding-top: 1.2rem; }
+  .dim-grid { grid-template-columns: 1fr; }
+  .adopt-grid { grid-template-columns: 1fr 1fr; }
+  .adopt-cell:nth-child(2) { border-right: none; }
+  .adopt-cell:nth-child(3) { border-top: 1px solid var(--outline-variant); }
+  .nav { padding: .8rem 1.2rem; }
+  .scale-dots .dot { width: 23px; height: 23px; font-size: .55rem; }
+  .block { padding: 1.5rem 1.4rem; }
+  .btn { padding: 1.1rem 1.4rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Progress -->
+<div class="progress-rail"><div class="progress-fill" id="progress-fill"></div></div>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-wordmark">AI Legacy · Business</div>
+  <div class="nav-right">
+    <span class="nav-step" id="progress-label"></span>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Theme wechseln" aria-label="Theme wechseln">
+      <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:none">
+        <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+      </svg>
+      <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<!-- ══════════════════════════════════════════════════════════
+     S0 — CONSENT
+══════════════════════════════════════════════════════════ -->
+<div class="screen active" id="s0">
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <span class="label-sm">Studie · 2026</span>
+    </div>
+    <h1 class="display-lg">AI Legacy<br><em>Business</em></h1>
+    <p class="body-md" style="max-width:480px;margin-top:1.4rem">
+      Wie verändert künstliche Intelligenz die berufliche Wissensarbeit? Messen Sie Ihre KI-Kompetenz und vergleichen Sie sich mit Ihren Peers.
+    </p>
+    <div class="hero-meta-strip">
+      <div class="hero-meta-item">
+        <div class="label-sm">Dauer</div>
+        <div class="hero-meta-val">7 Min.</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="label-sm">Datenschutz</div>
+        <div class="hero-meta-val">DSGVO</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="label-sm">Zweck</div>
+        <div class="hero-meta-val">Forschung</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-rule"></div>
+    <div class="section-index">Datenschutzerklärung</div>
+  </div>
+
+  <div class="block">
+    <div id="c0" class="consent-row" onclick="toggleConsent(0)">
+      <div class="consent-check"><span class="consent-tick">✓</span></div>
+      <div class="consent-text"><strong>Einwilligung zur Datenverarbeitung</strong><br>
+      Ich stimme zu, dass meine anonymisierten Antworten für die Studie „AI Legacy Business 2026" gespeichert und wissenschaftlich ausgewertet werden. Die Daten werden ausschließlich in aggregierter Form verwendet. Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO.</div>
+    </div>
+    <div id="c1" class="consent-row" onclick="toggleConsent(1)">
+      <div class="consent-check"><span class="consent-tick">✓</span></div>
+      <div class="consent-text"><strong>Freiwillige Teilnahme</strong><br>
+      Ich nehme freiwillig teil und kann die Umfrage jederzeit ohne Angabe von Gründen abbrechen, ohne dass mir dadurch Nachteile entstehen.</div>
+    </div>
+    <div id="c2" class="consent-row" onclick="toggleConsent(2)">
+      <div class="consent-check"><span class="consent-tick">✓</span></div>
+      <div class="consent-text"><strong>Verwendung in Publikationen <span class="optional">Optional</span></strong><br>
+      Ich bin damit einverstanden, dass die anonymisierten Ergebnisse in wissenschaftlichen Publikationen veröffentlicht werden. (Art. 89 DSGVO)</div>
+    </div>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn btn-primary" id="btn-consent" onclick="startSurvey()" disabled>Umfrage starten</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     S1 — PROFIL
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="s1">
+  <div class="section-head">
+    <div class="section-rule"></div>
+    <div class="section-index">Abschnitt 1 von 5</div>
+    <h2 class="headline-lg">Berufliches <em>Profil</em></h2>
+    <p class="section-sub">Diese Angaben ermöglichen anonymisierte Gruppenvergleiche innerhalb der Studie.</p>
+  </div>
+
+  <div class="block">
+    <div class="field">
+      <label class="field-label">Branche / Tätigkeitsbereich</label>
+      <select id="d-branche" onchange="checkDemo()">
+        <option value="">— bitte wählen —</option>
+        <option value="digital">Digitale Wirtschaft (IT, Software, KI-Forschung)</option>
+        <option value="finance">Finanz &amp; Versicherung (Banken, Versicherungen)</option>
+        <option value="industrie">Industrie &amp; Fertigung (Maschinenbau, Metall)</option>
+        <option value="bau_immo">Bau &amp; Immobilien (Architektur, Ingenieurbüros, RE)</option>
+        <option value="energie">Energie &amp; Umwelt (Energieversorgung, Clean-Tech)</option>
+        <option value="gesundheit">Gesundheit &amp; Soziales (Medizin, Pflege)</option>
+        <option value="handel">Handel &amp; Logistik (Einzelhandel, Transport)</option>
+        <option value="bildung">Bildung &amp; Forschung (Universitäten, Forschung)</option>
+        <option value="tourismus">Tourismus &amp; Gastronomie (Hotellerie, F&amp;B)</option>
+        <option value="verwaltung">Öffentliche Verwaltung (Öffentl. Dienste)</option>
+        <option value="kreativ">Kreativwirtschaft (Medien, Werbung, Kultur)</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Berufliche Funktion</label>
+      <div class="opts" id="d-funktion">
+        <div class="opt" onclick="selOpt('d-funktion',this,'funktion','Führungskraft / Management')">
+          <div class="opt-mark"></div>
+          <div><span class="opt-label">Führungskraft / Management</span></div>
+        </div>
+        <div class="opt" onclick="selOpt('d-funktion',this,'funktion','Fachkraft / Sachbearbeitung')">
+          <div class="opt-mark"></div>
+          <div><span class="opt-label">Fachkraft / Sachbearbeitung</span></div>
+        </div>
+        <div class="opt" onclick="selOpt('d-funktion',this,'funktion','Spezialist / Expert:in')">
+          <div class="opt-mark"></div>
+          <div><span class="opt-label">Spezialist / Expert:in</span></div>
+        </div>
+        <div class="opt" onclick="selOpt('d-funktion',this,'funktion','Selbständig / Unternehmer:in')">
+          <div class="opt-mark"></div>
+          <div><span class="opt-label">Selbständig / Unternehmer:in</span></div>
+        </div>
+        <div class="opt" onclick="selOpt('d-funktion',this,'funktion','Sonstiges')">
+          <div class="opt-mark"></div>
+          <div><span class="opt-label">Sonstiges</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="field">
+      <label class="field-label">Unternehmensgröße (Mitarbeitende)</label>
+      <div class="opts" id="d-groesse">
+        <div class="opt" onclick="selOpt('d-groesse',this,'groesse','1–9')">
+          <div class="opt-mark"></div>
+          <div><span class="opt-label">1–9</span> <span class="opt-note">Kleinstunternehmen</span></div>
+        </div>
+        <div class="opt" onclick="selOpt('d-groesse',this,'groesse','10–49')">
+          <div class="opt-mark"></div>
+          <div><span class="opt-label">10–49</span> <span class="opt-note">Kleinunternehmen</span></div>
+        </div>
+        <div class="opt" onclick="selOpt('d-groesse',this,'groesse','50–249')">
+          <div class="opt-mark"></div>
+          <div><span class="opt-label">50–249</span> <span class="opt-note">Mittelunternehmen</span></div>
+        </div>
+        <div class="opt" onclick="selOpt('d-groesse',this,'groesse','250–999')">
+          <div class="opt-mark"></div>
+          <div><span class="opt-label">250–999</span> <span class="opt-note">Großunternehmen</span></div>
+        </div>
+        <div class="opt" onclick="selOpt('d-groesse',this,'groesse','1000+')">
+          <div class="opt-mark"></div>
+          <div><span class="opt-label">1.000+</span> <span class="opt-note">Konzern</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="field">
+      <label class="field-label">Altersgruppe</label>
+      <div class="opts" id="d-alter">
+        <div class="opt" onclick="selOpt('d-alter',this,'alter','unter 25')"><div class="opt-mark"></div><span class="opt-label">Unter 25</span></div>
+        <div class="opt" onclick="selOpt('d-alter',this,'alter','25–34')"><div class="opt-mark"></div><span class="opt-label">25–34</span></div>
+        <div class="opt" onclick="selOpt('d-alter',this,'alter','35–44')"><div class="opt-mark"></div><span class="opt-label">35–44</span></div>
+        <div class="opt" onclick="selOpt('d-alter',this,'alter','45–54')"><div class="opt-mark"></div><span class="opt-label">45–54</span></div>
+        <div class="opt" onclick="selOpt('d-alter',this,'alter','55+')"><div class="opt-mark"></div><span class="opt-label">55 oder älter</span></div>
+      </div>
+    </div>
+    <div class="field" style="margin-bottom:0">
+      <label class="field-label">Geschlecht <span class="optional">Optional</span></label>
+      <div class="opts" id="d-geschlecht">
+        <div class="opt" onclick="selOpt('d-geschlecht',this,'geschlecht','weiblich')"><div class="opt-mark"></div><span class="opt-label">Weiblich</span></div>
+        <div class="opt" onclick="selOpt('d-geschlecht',this,'geschlecht','männlich')"><div class="opt-mark"></div><span class="opt-label">Männlich</span></div>
+        <div class="opt" onclick="selOpt('d-geschlecht',this,'geschlecht','divers')"><div class="opt-mark"></div><span class="opt-label">Divers / Nicht-binär</span></div>
+        <div class="opt" onclick="selOpt('d-geschlecht',this,'geschlecht','keine Angabe')"><div class="opt-mark"></div><span class="opt-label">Keine Angabe</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn btn-secondary" onclick="goScreen(0)">← Zurück</button>
+    <button class="btn btn-primary" id="btn-s1" onclick="goScreen(2)" disabled>Weiter</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     S2 — KI-NUTZUNG
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="s2">
+  <div class="section-head">
+    <div class="section-rule"></div>
+    <div class="section-index">Abschnitt 2 von 5</div>
+    <h2 class="headline-lg">KI im <em>Arbeitsalltag</em></h2>
+    <p class="section-sub">Ihre aktuelle Nutzung von KI-Tools in der beruflichen Praxis.</p>
+  </div>
+
+  <div class="block">
+    <div class="block-title">Nutzungsfrequenz</div>
+    <div class="block-sub">Wie häufig verwenden Sie KI-Tools in Ihrer beruflichen Tätigkeit?</div>
+    <div class="freq-grid" id="freq">
+      <div class="freq-row" onclick="selFreq(this,'täglich')">
+        <div class="freq-dot"></div>
+        <span class="freq-label">Täglich</span>
+        <span class="freq-badge">≥ 5× / Woche</span>
+      </div>
+      <div class="freq-row" onclick="selFreq(this,'mehrmals wöchentlich')">
+        <div class="freq-dot"></div>
+        <span class="freq-label">Mehrmals pro Woche</span>
+        <span class="freq-badge">2–4× / Woche</span>
+      </div>
+      <div class="freq-row" onclick="selFreq(this,'wöchentlich')">
+        <div class="freq-dot"></div>
+        <span class="freq-label">Wöchentlich</span>
+        <span class="freq-badge">≈ 1× / Woche</span>
+      </div>
+      <div class="freq-row" onclick="selFreq(this,'monatlich')">
+        <div class="freq-dot"></div>
+        <span class="freq-label">Monatlich</span>
+        <span class="freq-badge">1–3× / Monat</span>
+      </div>
+      <div class="freq-row" onclick="selFreq(this,'selten oder nie')">
+        <div class="freq-dot"></div>
+        <span class="freq-label">Selten oder nie</span>
+        <span class="freq-badge">sporadisch</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-title">Einsatzbereiche</div>
+    <div class="block-sub">Für welche beruflichen Aufgaben nutzen Sie KI? Mehrfachauswahl möglich.</div>
+    <div class="chips" id="usecases">
+      <div class="chip" onclick="toggleChip(this)">Recherche &amp; Analyse</div>
+      <div class="chip" onclick="toggleChip(this)">Texterstellung &amp; Korrektur</div>
+      <div class="chip" onclick="toggleChip(this)">Datenauswertung</div>
+      <div class="chip" onclick="toggleChip(this)">Reporting &amp; Dokumentation</div>
+      <div class="chip" onclick="toggleChip(this)">Kundenkommunikation</div>
+      <div class="chip" onclick="toggleChip(this)">Präsentationen &amp; Visualisierungen</div>
+      <div class="chip" onclick="toggleChip(this)">Programmierung &amp; Automatisierung</div>
+      <div class="chip" onclick="toggleChip(this)">Entscheidungsunterstützung</div>
+      <div class="chip" onclick="toggleChip(this)">Übersetzung &amp; Mehrsprachigkeit</div>
+      <div class="chip" onclick="toggleChip(this)">Schulung &amp; Wissensmanagement</div>
+      <div class="chip" onclick="toggleChip(this)">Noch keine Nutzung</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-title">Verwendete Tools</div>
+    <div class="block-sub">Welche KI-Anwendungen nutzen Sie beruflich? Mehrfachauswahl möglich.</div>
+    <div class="chips" id="tools">
+      <div class="chip" onclick="toggleChip(this)">ChatGPT</div>
+      <div class="chip" onclick="toggleChip(this)">Microsoft Copilot</div>
+      <div class="chip" onclick="toggleChip(this)">Google Gemini</div>
+      <div class="chip" onclick="toggleChip(this)">Claude (Anthropic)</div>
+      <div class="chip" onclick="toggleChip(this)">Perplexity</div>
+      <div class="chip" onclick="toggleChip(this)">GitHub Copilot</div>
+      <div class="chip" onclick="toggleChip(this)">Midjourney / DALL·E</div>
+      <div class="chip" onclick="toggleChip(this)">Unternehmensinterne KI</div>
+      <div class="chip" onclick="toggleChip(this)">Sonstige</div>
+      <div class="chip" onclick="toggleChip(this)">Keine</div>
+    </div>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn btn-secondary" onclick="goScreen(1)">← Zurück</button>
+    <button class="btn btn-primary" id="btn-s2" onclick="goScreen(3)" disabled>Weiter</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     S3 — EINSTELLUNGEN
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="s3">
+  <div class="section-head">
+    <div class="section-rule"></div>
+    <div class="section-index">Abschnitt 3 von 5</div>
+    <h2 class="headline-lg">Haltungen &amp; <em>Kontext</em></h2>
+    <p class="section-sub">Ihre persönliche Einstellung zu KI im beruflichen Umfeld.</p>
+  </div>
+
+  <div class="block">
+    <div class="block-title">Persönliche Einstellung zu KI</div>
+    <div class="block-sub">Was trifft am ehesten auf Sie zu?</div>
+    <div class="opts" id="attitude">
+      <div class="opt" onclick="selOpt('attitude',this,'attitude','sehr positiv')"><div class="opt-mark"></div><span class="opt-label">Sehr positiv — KI ist eine große Chance für meine Arbeit</span></div>
+      <div class="opt" onclick="selOpt('attitude',this,'attitude','eher positiv')"><div class="opt-mark"></div><span class="opt-label">Eher positiv — ich sehe mehr Chancen als Risiken</span></div>
+      <div class="opt" onclick="selOpt('attitude',this,'attitude','neutral')"><div class="opt-mark"></div><span class="opt-label">Neutral / abwartend — ich beobachte die Entwicklung</span></div>
+      <div class="opt" onclick="selOpt('attitude',this,'attitude','eher skeptisch')"><div class="opt-mark"></div><span class="opt-label">Eher skeptisch — ich sehe mehr Risiken als Chancen</span></div>
+      <div class="opt" onclick="selOpt('attitude',this,'attitude','sehr skeptisch')"><div class="opt-mark"></div><span class="opt-label">Sehr skeptisch — KI birgt erhebliche Risiken</span></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-title">Größte Bedenken gegenüber KI im Beruf</div>
+    <div class="block-sub">Mehrfachauswahl möglich.</div>
+    <div class="chips" id="concerns">
+      <div class="chip" onclick="toggleChip(this)">Datenschutz &amp; Sicherheit</div>
+      <div class="chip" onclick="toggleChip(this)">Arbeitsplatzverlust</div>
+      <div class="chip" onclick="toggleChip(this)">Qualität &amp; Zuverlässigkeit</div>
+      <div class="chip" onclick="toggleChip(this)">Rechtliche Haftung</div>
+      <div class="chip" onclick="toggleChip(this)">Fehlende Regulierung</div>
+      <div class="chip" onclick="toggleChip(this)">Intransparenz / „Black Box"</div>
+      <div class="chip" onclick="toggleChip(this)">Kompetenzabbau</div>
+      <div class="chip" onclick="toggleChip(this)">Keine wesentlichen Bedenken</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-title">KI-Policy im Unternehmen</div>
+    <div class="block-sub">Verfügt Ihr Unternehmen über eine offizielle KI-Richtlinie?</div>
+    <div class="opts" id="policy">
+      <div class="opt" onclick="selOpt('policy',this,'policy','ja, vollständig')"><div class="opt-mark"></div><span class="opt-label">Ja, eine vollständige KI-Policy ist in Kraft</span></div>
+      <div class="opt" onclick="selOpt('policy',this,'policy','ja, in Entwicklung')"><div class="opt-mark"></div><span class="opt-label">In Entwicklung / Pilotphase</span></div>
+      <div class="opt" onclick="selOpt('policy',this,'policy','nein')"><div class="opt-mark"></div><span class="opt-label">Nein, keine offizielle Richtlinie</span></div>
+      <div class="opt" onclick="selOpt('policy',this,'policy','weiß nicht')"><div class="opt-mark"></div><span class="opt-label">Weiß nicht</span></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-title">KI-Schulungen &amp; Weiterbildung</div>
+    <div class="block-sub">Hat Ihr Unternehmen bisher KI-Schulungen für Mitarbeitende angeboten?</div>
+    <div class="opts" id="training">
+      <div class="opt" onclick="selOpt('training',this,'training','ja, umfassend')"><div class="opt-mark"></div><span class="opt-label">Ja, umfassende Schulungen wurden durchgeführt</span></div>
+      <div class="opt" onclick="selOpt('training',this,'training','ja, vereinzelt')"><div class="opt-mark"></div><span class="opt-label">Ja, vereinzelt / in bestimmten Abteilungen</span></div>
+      <div class="opt" onclick="selOpt('training',this,'training','geplant')"><div class="opt-mark"></div><span class="opt-label">Geplant, aber noch nicht umgesetzt</span></div>
+      <div class="opt" onclick="selOpt('training',this,'training','nein')"><div class="opt-mark"></div><span class="opt-label">Nein, noch keine Schulungen</span></div>
+    </div>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn btn-secondary" onclick="goScreen(2)">← Zurück</button>
+    <button class="btn btn-primary" id="btn-s3" onclick="goScreen(4)" disabled>Weiter</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     S4 — MAILS SCALE
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="s4">
+  <div class="section-head">
+    <div class="section-rule"></div>
+    <div class="section-index">Abschnitt 4 von 5</div>
+    <h2 class="headline-lg">KI-Kompetenz-<em>Skala</em></h2>
+    <p class="section-sub">Bitte bewerten Sie jede Aussage auf einer Skala von 0 bis 10.</p>
+    <p style="font-size:.6875rem;letter-spacing:.04em;color:var(--dim);margin-top:.5rem">
+      Quelle: Koch, Carolus, Wienrich &amp; Latoschik (2024). MAILS – Meta AI Literacy Scale. <em>Heliyon</em>, Open Access.
+    </p>
+  </div>
+
+  <div class="block" id="mails-items"></div>
+
+  <div class="btn-group">
+    <button class="btn btn-secondary" onclick="goScreen(3)">← Zurück</button>
+    <button class="btn btn-primary" id="btn-s4" onclick="goScreen(5)" disabled>Ergebnis anzeigen</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     S5 — CLOSING
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="s5">
+  <div class="section-head">
+    <div class="section-rule"></div>
+    <div class="section-index">Abschnitt 5 von 5</div>
+    <h2 class="headline-lg">Letzte <em>Fragen</em></h2>
+    <p class="section-sub">Fast geschafft — zwei kurze Abschlussfragen.</p>
+  </div>
+
+  <div class="block">
+    <div class="block-title">Ihre wichtigste KI-Erfahrung im Beruf <span class="optional">Optional</span></div>
+    <div class="block-sub">Gab es einen konkreten Moment, in dem KI Ihre Arbeit spürbar verändert hat?</div>
+    <textarea id="t-experience" placeholder="Kurze Beschreibung …" maxlength="500"></textarea>
+  </div>
+
+  <div class="block">
+    <div class="block-title">Was Unternehmen jetzt tun sollten <span class="optional">Optional</span></div>
+    <div class="block-sub">Welche eine Maßnahme sollten Unternehmen dringend in Bezug auf KI ergreifen?</div>
+    <textarea id="t-recommendation" placeholder="Ihre Empfehlung …" maxlength="500"></textarea>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn btn-secondary" onclick="goScreen(4)">← Zurück</button>
+    <button class="btn btn-primary" onclick="submitSurvey()">Mein Ergebnis sehen</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     S6 — ERGEBNISSE
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="s6">
+
+  <div class="result-masthead">
+    <div class="result-eyebrow">MAILS-Gesamtscore · AI Legacy Business 2026</div>
+    <div class="result-score-wrap">
+      <span class="result-score" id="r-score">—</span>
+      <span class="result-denom">/ 10</span>
+    </div>
+    <div class="result-tier" id="r-tier">—</div>
+    <p class="result-desc" id="r-desc"></p>
+  </div>
+
+  <div class="gauge-wrap">
+    <div class="gauge-track"><div class="gauge-fill" id="gauge-fill" style="width:0%"></div></div>
+    <div class="gauge-labels"><span>0</span><span>2.5</span><span>5</span><span>7.5</span><span>10</span></div>
+  </div>
+
+  <div class="major-section">
+    <div class="section-rule"></div>
+    <div class="section-index" style="margin-bottom:1.2rem">KI-Kompetenzdimensionen</div>
+    <div class="dim-grid" id="dim-grid"></div>
+  </div>
+
+  <div class="major-section">
+    <div class="section-rule"></div>
+    <div class="section-index" style="margin-bottom:.5rem">Adoptionsprofil</div>
+    <div class="adopt-grid" id="adopt-grid"></div>
+  </div>
+
+  <div class="major-section">
+    <div class="section-rule"></div>
+    <div class="section-index" style="margin-bottom:.5rem">Peer-Benchmarking</div>
+    <div id="bench-content"></div>
+  </div>
+
+  <div class="insight-block" id="r-insight"></div>
+
+  <div style="margin-top:var(--sp-12);padding-top:2rem;border-top:1px solid var(--outline-variant)">
+    <p class="label-sm" style="margin-bottom:.8rem">Danke für Ihre Teilnahme</p>
+    <p class="body-md" style="max-width:420px">Die Ergebnisse der Studie AI Legacy Business 2026 werden nach Abschluss der Erhebungsphase publiziert.</p>
+    <div class="btn-group" style="margin-top:2rem">
+      <button class="btn btn-secondary" onclick="location.reload()">Neue Teilnahme</button>
+    </div>
+  </div>
+
+</div>
+</div><!-- /wrap -->
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   CONFIGURATION
+══════════════════════════════════════════════════════════════ */
+const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyF_Q5pKXfuyuskMgS4He2GX0dsWm5eHRdbBW0laRQ0kLHHG1JmjQH8nFwRH8GLQHES_A/exec';
+const LS_KEY = 'ailegacy_business_v1';
+
+/* ═══════════════════════════════════════════════════════════════
+   MAILS SHORT SCALE — 10 Items (Carolus et al., 2024)
+   Adapted: "in meinem Studium" → "in meiner beruflichen Tätigkeit"
+   Dimensions: Use (1-2), Detect (3-4), Ethics (5-6), Create (7-8), Understand (9-10)
+══════════════════════════════════════════════════════════════ */
+const MAILS_ITEMS = [
+  { id:'m1', dim:'use',       text:'Ich kann KI-Anwendungen in meiner beruflichen Tätigkeit sinnvoll einsetzen.' },
+  { id:'m2', dim:'use',       text:'Ich bin in der Lage, KI-Tools effektiv für meine Arbeitsaufgaben zu nutzen.' },
+  { id:'m3', dim:'detect',    text:'Ich erkenne, wenn Inhalte von einer KI generiert wurden.' },
+  { id:'m4', dim:'detect',    text:'Ich kann einschätzen, ob beruflich relevante Informationen aus einer KI-Quelle stammen.' },
+  { id:'m5', dim:'ethics',    text:'Ich reflektiere ethische Fragen beim Einsatz von KI in meiner Arbeit.' },
+  { id:'m6', dim:'ethics',    text:'Ich hinterfrage, welche gesellschaftlichen Folgen KI-Systeme in meinem Berufsfeld haben könnten.' },
+  { id:'m7', dim:'create',    text:'Ich kann KI gezielt einsetzen, um berufliche Arbeitsergebnisse zu erstellen oder zu verbessern.' },
+  { id:'m8', dim:'create',    text:'Ich nutze KI als kreatives Werkzeug zur Lösung beruflicher Aufgaben.' },
+  { id:'m9', dim:'understand',text:'Ich verstehe grundlegend, wie KI-Systeme in meinem Berufskontext funktionieren.' },
+  { id:'m10',dim:'understand',text:'Ich kann erklären, welche Daten KI-Systeme verarbeiten, die ich beruflich einsetze.' },
+];
+
+const DIM_META = {
+  use:       { label:'KI-Anwendung',    color:'var(--accent)' },
+  detect:    { label:'KI-Erkennung',    color:'var(--blue)' },
+  ethics:    { label:'KI-Ethik',        color:'var(--green)' },
+  create:    { label:'KI-Generierung',  color:'var(--red)' },
+  understand:{ label:'KI-Verständnis',  color:'var(--amber)' },
+};
+
+const GLOBAL_BENCH = {
+  mails_mean: 5.8,
+  daily_pct: 34,
+  regular_pct: 55,
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════════════════ */
+const answers = {
+  consent: [false, false, false],
+  branche:'', funktion:'', groesse:'', alter:'', geschlecht:'',
+  freq:'',
+  usecases:[], tools:[],
+  attitude:'', concerns:[], policy:'', training:'',
+  mails:{},
+  experience:'', recommendation:''
+};
+
+let currentScreen = 0;
+const TOTAL_SCREENS = 7;
+
+/* ═══════════════════════════════════════════════════════════════
+   THEME TOGGLE
+══════════════════════════════════════════════════════════════ */
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('icon-sun').style.display  = isDark ? 'none' : 'block';
+  document.getElementById('icon-moon').style.display = isDark ? 'block' : 'none';
+  try { localStorage.setItem('ailegacy_theme', isDark ? 'light' : 'dark'); } catch {}
+}
+
+(function initTheme() {
+  try {
+    const saved = localStorage.getItem('ailegacy_theme');
+    if (saved === 'dark') {
+      document.documentElement.setAttribute('data-theme','dark');
+      document.getElementById('icon-sun').style.display  = 'block';
+      document.getElementById('icon-moon').style.display = 'none';
+    }
+  } catch {}
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   MAILS — inject items
+══════════════════════════════════════════════════════════════ */
+function buildMailsItems() {
+  const container = document.getElementById('mails-items');
+  MAILS_ITEMS.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'scale-q';
+    div.id = 'sq-' + item.id;
+
+    let dotsHtml = '';
+    for (let v = 0; v <= 10; v++) {
+      dotsHtml += `<div class="dot" onclick="selDot('${item.id}',${v},this)">${v}</div>`;
+    }
+
+    div.innerHTML = `
+      <div class="scale-text">
+        <span class="scale-num">${idx+1}.</span>${item.text}
+      </div>
+      <div class="scale-track">
+        <div class="scale-anchor">trifft gar<br>nicht zu</div>
+        <div class="scale-dots">${dotsHtml}</div>
+        <div class="scale-anchor">trifft voll<br>zu</div>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CONSENT
+══════════════════════════════════════════════════════════════ */
+function toggleConsent(i) {
+  answers.consent[i] = !answers.consent[i];
+  document.getElementById('c'+i).classList.toggle('checked', answers.consent[i]);
+  document.getElementById('btn-consent').disabled = !(answers.consent[0] && answers.consent[1]);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   OPTION SELECTORS
+══════════════════════════════════════════════════════════════ */
+function selOpt(groupId, el, key, val) {
+  document.querySelectorAll('#'+groupId+' .opt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+  answers[key] = val;
+  if (groupId === 'd-branche') { /* handled by select */ }
+  checkScreen(currentScreen);
+}
+
+function toggleChip(el) {
+  el.classList.toggle('sel');
+  checkScreen(currentScreen);
+}
+
+function selFreq(el, val) {
+  document.querySelectorAll('#freq .freq-row').forEach(r => r.classList.remove('sel'));
+  el.classList.add('sel');
+  answers.freq = val;
+  checkScreen(currentScreen);
+}
+
+function selDot(itemId, val, el) {
+  const sq = document.getElementById('sq-'+itemId);
+  sq.querySelectorAll('.dot').forEach(d => d.classList.remove('sel'));
+  el.classList.add('sel');
+  answers.mails[itemId] = val;
+  sq.classList.add('answered');
+  checkScreen(currentScreen);
+}
+
+function checkDemo() {
+  answers.branche = document.getElementById('d-branche').value;
+  checkScreen(currentScreen);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   VALIDATION PER SCREEN
+══════════════════════════════════════════════════════════════ */
+function checkScreen(s) {
+  if (s === 1) {
+    const ok = answers.branche && answers.funktion && answers.groesse && answers.alter;
+    document.getElementById('btn-s1').disabled = !ok;
+  }
+  if (s === 2) {
+    document.getElementById('btn-s2').disabled = !answers.freq;
+  }
+  if (s === 3) {
+    const ok = answers.attitude && answers.policy && answers.training;
+    document.getElementById('btn-s3').disabled = !ok;
+  }
+  if (s === 4) {
+    const answered = Object.keys(answers.mails).length;
+    document.getElementById('btn-s4').disabled = answered < MAILS_ITEMS.length;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════════════════════ */
+function goScreen(n) {
+  document.getElementById('s'+currentScreen).classList.remove('active');
+  document.getElementById('s'+n).classList.add('active');
+  currentScreen = n;
+  updateProgress();
+  window.scrollTo({top:0, behavior:'smooth'});
+  checkScreen(n);
+}
+
+function updateProgress() {
+  const pct = (currentScreen / (TOTAL_SCREENS - 1)) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  const labels = ['Einwilligung','Profil','KI-Nutzung','Einstellungen','Kompetenz','Abschluss','Ergebnis'];
+  document.getElementById('progress-label').textContent = labels[currentScreen] || '';
+}
+
+function startSurvey() {
+  goScreen(1);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SCORE CALCULATION
+══════════════════════════════════════════════════════════════ */
+function calcScores() {
+  let total = 0, n = 0;
+  const dims = {};
+  Object.values(DIM_META).forEach(d => dims[d.label] = { sum:0, n:0 });
+
+  MAILS_ITEMS.forEach(item => {
+    const v = answers.mails[item.id];
+    if (v !== undefined) {
+      total += v; n++;
+      const label = DIM_META[item.dim].label;
+      dims[label].sum += v; dims[label].n++;
+    }
+  });
+
+  const mean = n > 0 ? total / n : 0;
+  const dimScores = {};
+  Object.entries(dims).forEach(([label, d]) => {
+    dimScores[label] = d.n > 0 ? d.sum / d.n : 0;
+  });
+
+  return { mean, dimScores, total, n };
+}
+
+function getTier(mean) {
+  if (mean >= 8.0) return { tier:'KI-Expert:in',     desc:'Sie verfügen über eine ausgeprägte KI-Kompetenz und nutzen KI routiniert in Ihrer Arbeit.' };
+  if (mean >= 6.5) return { tier:'KI-Anwender:in',   desc:'Sie nutzen KI selbstsicher in vielen Bereichen und entwickeln Ihre Kompetenz kontinuierlich weiter.' };
+  if (mean >= 5.0) return { tier:'KI-Einsteiger:in', desc:'Sie haben erste Erfahrungen gesammelt und erkunden aktiv die Möglichkeiten von KI im Beruf.' };
+  if (mean >= 3.0) return { tier:'KI-Beobachter:in', desc:'Sie stehen KI noch zurückhaltend gegenüber — ein gezielter Einstieg könnte Ihre Arbeit bereichern.' };
+  return { tier:'KI-Skeptiker:in', desc:'Eine strukturierte Auseinandersetzung mit KI-Grundlagen könnte neue berufliche Perspektiven eröffnen.' };
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   localStorage BENCHMARKING
+══════════════════════════════════════════════════════════════ */
+function loadBenchState() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    return raw ? JSON.parse(raw) : { n:0, mails_sum:0, branche_n:{}, branche_mails_sum:{} };
+  } catch { return { n:0, mails_sum:0, branche_n:{}, branche_mails_sum:{} }; }
+}
+
+function saveBenchState(state) {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {}
+}
+
+function updateBench(mean) {
+  const state = loadBenchState();
+  state.n++;
+  state.mails_sum += mean;
+
+  const br = answers.branche || 'other';
+  if (!state.branche_n[br]) { state.branche_n[br]=0; state.branche_mails_sum[br]=0; }
+  state.branche_n[br]++;
+  state.branche_mails_sum[br] += mean;
+
+  saveBenchState(state);
+  return state;
+}
+
+function renderBench(state, myScore) {
+  const container = document.getElementById('bench-content');
+  const n = state.n;
+  const PHASE_MIN = 30, PHASE_ACT = 50, PHASE_SUB = 100;
+
+  let html = `
+    <div class="bench-block">
+      <div class="bench-heading">Globaler Referenzwert</div>
+      <div class="bench-sub">Basierend auf internationalen KI-Adoptionsstudien (McKinsey 2024 / WEF 2025)</div>
+      <div class="comp-row">
+        <div class="comp-label">Ihr Score</div>
+        <div class="comp-bar-wrap"><div class="comp-bar you" style="width:${(myScore/10*100).toFixed(1)}%"></div></div>
+        <div class="comp-val">${myScore.toFixed(1)}</div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-label">Referenz ~</div>
+        <div class="comp-bar-wrap"><div class="comp-bar peer" style="width:${(GLOBAL_BENCH.mails_mean/10*100).toFixed(1)}%"></div></div>
+        <div class="comp-val">${GLOBAL_BENCH.mails_mean.toFixed(1)}</div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-label">Tägl. Nutzung</div>
+        <div class="comp-bar-wrap"><div class="comp-bar peer" style="width:${GLOBAL_BENCH.daily_pct}%"></div></div>
+        <div class="comp-val">${GLOBAL_BENCH.daily_pct}%</div>
+      </div>
+    </div>`;
+
+  if (n < PHASE_MIN) {
+    const needed = PHASE_MIN - n;
+    html += `
+      <div class="bench-block">
+        <div class="bench-heading">Peer-Benchmark · Business-Sample</div>
+        <div class="bench-sub">Wird freigeschaltet, sobald genug Teilnahmen vorliegen</div>
+        <div class="bench-pending">
+          Noch <strong>${needed}</strong> Teilnahmen bis zur ersten Auswertung (Minimum n=${PHASE_MIN}).<br>
+          Bisher gespeichert: <strong>${n}</strong> Datenpunkte auf diesem Gerät.
+        </div>
+      </div>`;
+  } else {
+    const peerMean = state.mails_sum / n;
+    const warnHtml = n < PHASE_ACT ? `<div class="warn-note">Vorläufig — Stichprobe noch klein (n=${n}). Werte mit Vorsicht interpretieren.</div>` : '';
+
+    html += `
+      <div class="bench-block">
+        <div class="bench-heading">Peer-Benchmark · Business-Sample</div>
+        <div class="bench-sub">Vergleich mit ${n} bisherigen Teilnahmen auf diesem Gerät/Netzwerk</div>
+        ${warnHtml}
+        <div class="comp-row">
+          <div class="comp-label">Ihr Score</div>
+          <div class="comp-bar-wrap"><div class="comp-bar you" style="width:${(myScore/10*100).toFixed(1)}%"></div></div>
+          <div class="comp-val">${myScore.toFixed(1)}</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-label">Ø Business</div>
+          <div class="comp-bar-wrap"><div class="comp-bar peer" style="width:${(peerMean/10*100).toFixed(1)}%"></div></div>
+          <div class="comp-val">${peerMean.toFixed(1)}</div>
+        </div>
+      </div>`;
+
+    if (n >= PHASE_SUB) {
+      const br = answers.branche;
+      const brN = (state.branche_n[br] || 0);
+      if (brN >= 10) {
+        const brMean = state.branche_mails_sum[br] / brN;
+        const sel = document.getElementById('d-branche');
+        const brancheLabel = sel.options[sel.selectedIndex]?.text || br;
+        html += `
+          <div class="bench-block">
+            <div class="bench-heading">Branchenvergleich</div>
+            <div class="bench-sub">${brancheLabel} · n=${brN}</div>
+            <div class="comp-row">
+              <div class="comp-label">Ihr Score</div>
+              <div class="comp-bar-wrap"><div class="comp-bar you" style="width:${(myScore/10*100).toFixed(1)}%"></div></div>
+              <div class="comp-val">${myScore.toFixed(1)}</div>
+            </div>
+            <div class="comp-row">
+              <div class="comp-label">Ø Branche</div>
+              <div class="comp-bar-wrap"><div class="comp-bar peer" style="width:${(brMean/10*100).toFixed(1)}%"></div></div>
+              <div class="comp-val">${brMean.toFixed(1)}</div>
+            </div>
+          </div>`;
+      }
+    }
+  }
+
+  container.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ADOPTION PROFILE
+══════════════════════════════════════════════════════════════ */
+function freqToAdoptScore(f) {
+  const map = { 'täglich':5,'mehrmals wöchentlich':4,'wöchentlich':3,'monatlich':2,'selten oder nie':1 };
+  return map[f] || 0;
+}
+
+function renderAdoptGrid(freq, tools, usecases) {
+  const adopt = freqToAdoptScore(freq);
+  const adoptPct = Math.round((adopt/5)*100);
+  const toolCount = tools.filter(t=>t!=='Keine').length;
+  const ucCount = usecases.filter(u=>u!=='Noch keine Nutzung').length;
+
+  return `
+    <div class="adopt-cell">
+      <div class="adopt-val">${adoptPct}%</div>
+      <div class="adopt-lbl">Nutzungs-intensität</div>
+    </div>
+    <div class="adopt-cell">
+      <div class="adopt-val">${toolCount}</div>
+      <div class="adopt-lbl">KI-Tools im Einsatz</div>
+    </div>
+    <div class="adopt-cell">
+      <div class="adopt-val">${ucCount}</div>
+      <div class="adopt-lbl">Einsatzbereiche</div>
+    </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INSIGHT GENERATOR
+══════════════════════════════════════════════════════════════ */
+function generateInsight(scores, freq, attitude, policy) {
+  const { mean, dimScores } = scores;
+  const dimEntries = Object.entries(dimScores).sort((a,b) => b[1]-a[1]);
+  const topDim = dimEntries[0];
+  const lowDim = dimEntries[dimEntries.length-1];
+
+  const euNote = `Der EU AI Act (Art. 4) verpflichtet Unternehmen ab August 2026 zur Sicherstellung von KI-Kompetenz ihrer Mitarbeitenden — eine strukturierte Auseinandersetzung mit KI ist damit nicht mehr optional, sondern Compliance-Anforderung.`;
+
+  let insight = `Ihre stärkste Kompetenzdimension ist <strong>${topDim[0]}</strong> (${topDim[1].toFixed(1)}/10). `;
+
+  if (lowDim[1] < 5) {
+    insight += `Entwicklungspotenzial besteht besonders bei <strong>${lowDim[0]}</strong> (${lowDim[1].toFixed(1)}/10). `;
+  }
+
+  if (policy === 'nein') {
+    insight += `Da in Ihrem Unternehmen noch keine KI-Policy besteht, empfiehlt sich eine frühzeitige Auseinandersetzung mit Governance-Strukturen. `;
+  }
+
+  insight += euNote;
+  document.getElementById('r-insight').innerHTML = `<p>${insight}</p>`;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SUBMIT & SHOW RESULTS
+══════════════════════════════════════════════════════════════ */
+function submitSurvey() {
+  answers.experience = document.getElementById('t-experience').value;
+  answers.recommendation = document.getElementById('t-recommendation').value;
+
+  const scores = calcScores();
+  const { mean, dimScores } = scores;
+  const { tier, desc } = getTier(mean);
+
+  const state = updateBench(mean);
+
+  const getChips = (id) => [...document.querySelectorAll('#'+id+' .chip.sel')].map(c => c.textContent.trim());
+  answers.usecases = getChips('usecases');
+  answers.tools    = getChips('tools');
+  answers.concerns = getChips('concerns');
+
+  document.getElementById('r-score').textContent = mean.toFixed(1);
+  document.getElementById('r-tier').textContent  = tier;
+  document.getElementById('r-desc').textContent  = desc;
+  setTimeout(() => { document.getElementById('gauge-fill').style.width = (mean/10*100)+'%'; }, 150);
+
+  const dimGrid = document.getElementById('dim-grid');
+  dimGrid.innerHTML = '';
+  Object.entries(dimScores).forEach(([label, val]) => {
+    const meta = Object.values(DIM_META).find(m => m.label === label) || { color:'var(--accent)' };
+    dimGrid.innerHTML += `
+      <div class="dim-block">
+        <div class="dim-name">${label}</div>
+        <div class="dim-score">${val.toFixed(1)}</div>
+        <div class="dim-bar"><div class="dim-bar-fill" style="width:${(val/10*100).toFixed(1)}%;background:${meta.color}"></div></div>
+      </div>`;
+  });
+
+  document.getElementById('adopt-grid').innerHTML = renderAdoptGrid(answers.freq, answers.tools, answers.usecases);
+  renderBench(state, mean);
+  generateInsight(scores, answers.freq, answers.attitude, answers.policy);
+  fireAndForget();
+  goScreen(6);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BACKEND SUBMIT
+══════════════════════════════════════════════════════════════ */
+function fireAndForget() {
+  if (!BACKEND_URL) return;
+  const getChips = (id) => [...document.querySelectorAll('#'+id+' .chip.sel')].map(c => c.textContent.trim());
+  const payload = {
+    ts: new Date().toISOString(),
+    survey: 'AILegacyBusiness2026',
+    branche: answers.branche,
+    funktion: answers.funktion,
+    groesse: answers.groesse,
+    alter: answers.alter,
+    geschlecht: answers.geschlecht,
+    freq: answers.freq,
+    usecases: getChips('usecases').join('; '),
+    tools: getChips('tools').join('; '),
+    attitude: answers.attitude,
+    concerns: getChips('concerns').join('; '),
+    policy: answers.policy,
+    training: answers.training,
+    mails_total: parseFloat(calcScores().mean.toFixed(2)),
+    mails_use:       parseFloat(((answers.mails['m1']||0)+(answers.mails['m2']||0))/2),
+    mails_detect:    parseFloat(((answers.mails['m3']||0)+(answers.mails['m4']||0))/2),
+    mails_ethics:    parseFloat(((answers.mails['m5']||0)+(answers.mails['m6']||0))/2),
+    mails_create:    parseFloat(((answers.mails['m7']||0)+(answers.mails['m8']||0))/2),
+    mails_understand:parseFloat(((answers.mails['m9']||0)+(answers.mails['m10']||0))/2),
+    experience: answers.experience,
+    recommendation: answers.recommendation,
+    consent_pub: answers.consent[2],
+    bench_n: loadBenchState().n
+  };
+  fetch(BACKEND_URL, {
+    method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(payload)
+  }).catch(()=>{});
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════════════ */
+buildMailsItems();
+updateProgress();
+</script>
+</body>
+</html>
